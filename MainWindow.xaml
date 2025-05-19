@@ -1,0 +1,54 @@
+﻿<Window x:Class="ExtratorDeConteudo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ExtratorDeConteudo"
+        mc:Ignorable="d"
+        Title="Excel Trimmer" Height="450" Width="831">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Botões principais -->
+            <RowDefinition Height="Auto"/>
+            <!-- Campos dinâmicos -->
+            <RowDefinition Height="*"/>
+            <!-- Grades -->
+        </Grid.RowDefinitions>
+
+        <!-- Botões principais -->
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
+            <Button Content="Carregar Excel" Width="150" Click="BtnCarregar_Click" Margin="0,0,10,0"/>
+            <Button Content="Exportar para .txt" Width="150" Click="BtnExportarTxt_Click" Margin="10,0,0,0"/>
+        </StackPanel>
+
+        <!-- Campos dinâmicos -->
+        <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,0,0,10">
+            <Button Content="Adicionar Regra" Width="150" Click="BtnAdicionarRegra_Click" Margin="0,0,0,10"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <TextBlock Text="Coluna" Width="60" FontWeight="Bold"/>
+                <TextBlock Text="Regex Filtro" Width="180" FontWeight="Bold" Margin="0,0,10,0"/>
+                <TextBlock Text="Regex Replace" Width="180" FontWeight="Bold" Margin="0,0,10,0"/>
+                <TextBlock Text="Substituir Por" Width="120" FontWeight="Bold" Margin="0,0,10,0"/>
+                <TextBlock Text="Remover" Width="60" FontWeight="Bold"/>
+            </StackPanel>
+            <StackPanel x:Name="stackRegraCampos" />
+        </StackPanel>
+
+        <!-- Grades -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Header="📂 Excel Original" Grid.Column="0" Margin="0,0,10,0">
+                <DataGrid x:Name="dataGridOriginal" AutoGenerateColumns="True"/>
+            </GroupBox>
+
+            <GroupBox Header="🔍 Resultado Formatado" Grid.Column="1">
+                <DataGrid x:Name="dataGridResultado" AutoGenerateColumns="True"/>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</Window>
