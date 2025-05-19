@@ -1,11 +1,14 @@
-﻿using Microsoft.Win32;
+﻿using ClosedXML.Excel;
+using ExtratorDeConteudo.Class;
+using Microsoft.Win32;
 using System.Data;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using ClosedXML.Excel;
-using System.Text.RegularExpressions;
-using System.IO;
-using ExtratorDeConteudo.Class;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ExtratorDeConteudo
 {
@@ -221,6 +224,68 @@ namespace ExtratorDeConteudo
                 {
                     MessageBox.Show("Erro ao exportar: " + ex.Message);
                 }
+            }
+        }
+
+        private void BtnExportarCSV_Click(object sender, RoutedEventArgs e)
+        {
+            var salvar = new SaveFileDialog
+            {
+                Filter = "Arquivo CSV (*.csv)|*.csv",
+                FileName = "resultado.csv"
+            };
+
+            if (salvar.ShowDialog() == true)
+            {
+                var tabela = ((DataView)dataGridResultado.ItemsSource).ToTable();
+                ExportarComoCSV(tabela, salvar.FileName);
+                MessageBox.Show("Exportado com sucesso!");
+            }
+        }
+
+        private void ExportarComoCSV(DataTable tabela, string caminhoArquivo)
+        {
+            var linhas = new List<string>();
+
+            // Cabeçalho
+            var colunas = tabela.Columns.Cast<DataColumn>().Select(c => c.ColumnName);
+            linhas.Add(string.Join(",", colunas));
+
+            // Linhas
+            foreach (DataRow row in tabela.Rows)
+            {
+                var valores = row.ItemArray.Select(campo =>
+                    "\"" + campo.ToString().Replace("\"", "\"\"") + "\""
+                );
+                linhas.Add(string.Join(",", valores));
+            }
+
+            File.WriteAllLines(caminhoArquivo, linhas, Encoding.UTF8);
+        }
+
+        private void BtnExportarExcel_Click(object sender, RoutedEventArgs e)
+        {
+            var salvar = new SaveFileDialog
+            {
+                Filter = "Arquivo Excel (*.xlsx)|*.xlsx",
+                FileName = "resultado.xlsx"
+            };
+
+            if (salvar.ShowDialog() == true)
+            {
+                var tabela = ((DataView)dataGridResultado.ItemsSource).ToTable();
+                ExportarComoExcel(tabela, salvar.FileName);
+                MessageBox.Show("Exportado como Excel com êxito!");
+            }
+        }
+
+        private void ExportarComoExcel(DataTable tabela, string caminhoArquivo)
+        {
+            using (var workbook = new ClosedXML.Excel.XLWorkbook())
+            {
+                var ws = workbook.Worksheets.Add("Resultado");
+                ws.Cell(1, 1).InsertTable(tabela);
+                workbook.SaveAs(caminhoArquivo);
             }
         }
     }

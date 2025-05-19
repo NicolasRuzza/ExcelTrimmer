@@ -18,8 +18,10 @@
 
         <!-- Botões principais -->
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
-            <Button Content="Carregar Excel" Width="150" Click="BtnCarregar_Click" Margin="0,0,10,0"/>
+            <Button Content="Carregar Excel" Width="150" Click="BtnCarregar_Click" Margin="0,0,0,0"/>
             <Button Content="Exportar para .txt" Width="150" Click="BtnExportarTxt_Click" Margin="10,0,0,0"/>
+            <Button Content="Exportar CSV" Width="150" Click="BtnExportarCSV_Click" Margin="10,0,10,0"/>
+            <Button Content="Exportar Excel" Width="150" Click="BtnExportarExcel_Click"/>
         </StackPanel>
 
         <!-- Campos dinâmicos -->
