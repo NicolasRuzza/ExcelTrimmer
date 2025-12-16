@@ -1,0 +1,16 @@
+﻿{
+  "templates": [
+    {
+      "name": "Limpa CNPJ/CPF",
+      "filter": "^(\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}|\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2})$",
+      "replace": "[\\s./-]+",
+      "newValue": ""
+    },
+    {
+      "name": "Limpar espaços",
+      "filter": "",
+      "replace": "\\s+",
+      "newValue": " "
+    }
+  ]
+}
