@@ -60,17 +60,45 @@ namespace ExtratorDeConteudo
                     if (primeiraLinha)
                     {
                         foreach (var cell in row.Cells())
-                            dt.Columns.Add(cell.Value.ToString());
+                        {
+                            string header = cell.Value.ToString();
+                            // Escapa caracteres que quebram o WPF
+                            header = header.Trim()
+                                .Replace("/", " ou ")
+                                .Replace(".", " ");
+
+                            if (string.IsNullOrEmpty(header))
+                                header = "ColunaSemNome";
+
+                            string headerFinal = header;
+                            int contador = 1;
+
+                            // A cada loop procura se há um header com o mesmo nome, se sim vai aumentando
+                            // o índice no nome.
+                            while (dt.Columns.Contains(headerFinal))
+                            {
+                                headerFinal = $"{headerFinal}_{contador}";
+                                contador++; 
+                            }
+
+                            dt.Columns.Add(headerFinal);
+                        }
+
                         primeiraLinha = false;
                     }
                     else
                     {
                         dt.Rows.Add();
-                        int i = 0;
+                        int i = -1;
+
                         foreach (var cell in row.Cells())
                         {
-                            dt.Rows[dt.Rows.Count - 1][i] = cell.Value.ToString();
-                            i++;
+                            // O datatable é construído com base na quantidade de headers. Se, por ventura, o
+                            // usuário tiver preenchido uma célula perdida além das colunas de cabeçalho, irá
+                            // disparar erro. Vale lembrar que o foreach é sobre as células usadas da planilha,
+                            // logo o index deve respeitar o máximo de colunas estabelecido no "if (primeiraLinha)"
+                            if (++ i <= dt.Columns.Count - 1) // ++ i é pré-incremento
+                                dt.Rows[dt.Rows.Count - 1][i] = cell.Value.ToString();
                         }
                     }
                 }
