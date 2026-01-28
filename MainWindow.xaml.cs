@@ -55,6 +55,13 @@ namespace ExtratorDeConteudo
                 var ws = wb.Worksheets.First();
                 bool primeiraLinha = true;
 
+                // Otimizar busca e definição de sufixo para os nomes de cabeçalhos
+                Dictionary<string, int> controleSufixo = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+                HashSet<string> headersUsados = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                // Regex para descobrir a "Raiz" do nome
+                Regex regexRaiz = new Regex(@"^(.*)_(\d+)$");
+
                 foreach (var row in ws.RowsUsed())
                 {
                     if (primeiraLinha)
@@ -71,16 +78,29 @@ namespace ExtratorDeConteudo
                                 header = "ColunaSemNome";
 
                             string headerFinal = header;
-                            int contador = 1;
+                            string baseHeader = header;
 
-                            // A cada loop procura se há um header com o mesmo nome, se sim vai aumentando
-                            // o índice no nome.
-                            while (dt.Columns.Contains(headerFinal))
+                            if (headersUsados.Contains(baseHeader))
                             {
-                                headerFinal = $"{headerFinal}_{contador}";
-                                contador++; 
+                                Match match = regexRaiz.Match(header);
+                                if (match.Success)
+                                {
+                                    baseHeader = match.Groups[1].Value; // Pega "quarto" de "quarto_101"
+                                }
+
+                                if (!controleSufixo.ContainsKey(baseHeader))
+                                    controleSufixo.Add(baseHeader, 1);
+
+                                // Caso exista uma ou mais colunas sufixadas pelo autor do excel, o código
+                                // irá percorrer o loop até encontrar uma combinação ainda não utilizada
+                                do
+                                {
+                                    headerFinal = $"{baseHeader}_{controleSufixo[baseHeader]}";
+                                    controleSufixo[baseHeader]++;
+                                } while (headersUsados.Contains(headerFinal));
                             }
 
+                            headersUsados.Add(headerFinal);
                             dt.Columns.Add(headerFinal);
                         }
 
