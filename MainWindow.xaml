@@ -18,21 +18,28 @@
 
         <!-- Botões principais -->
         <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Grid.Row="0">
-            <Button Content="Carregar Excel" Width="150" Click="BtnCarregar_Click" Margin="0,0,10,0"/>
+            <Button Content="Carregar Excel" Width="150" Click="BtnCarregar_Click" Margin="0,0,0,0"/>
             <Button Content="Exportar para .txt" Width="150" Click="BtnExportarTxt_Click" Margin="10,0,0,0"/>
+            <Button Content="Exportar CSV" Width="150" Click="BtnExportarCSV_Click" Margin="10,0,10,0"/>
+            <Button Content="Exportar Excel" Width="150" Click="BtnExportarExcel_Click"/>
+
+            <Button Content="Limpar Tudo" Width="150" Click="BtnLimpar_Click" Margin="10,0,0,0" Background="#FFDDDD"/>
         </StackPanel>
 
         <!-- Campos dinâmicos -->
         <StackPanel Orientation="Vertical" Grid.Row="1" Margin="0,0,0,10">
-            <Button Content="Adicionar Regra" Width="150" Click="BtnAdicionarRegra_Click" Margin="0,0,0,10"/>
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                <TextBlock Text="Coluna" Width="60" FontWeight="Bold"/>
-                <TextBlock Text="Regex Filtro" Width="180" FontWeight="Bold" Margin="0,0,10,0"/>
-                <TextBlock Text="Regex Replace" Width="180" FontWeight="Bold" Margin="0,0,10,0"/>
-                <TextBlock Text="Substituir Por" Width="120" FontWeight="Bold" Margin="0,0,10,0"/>
-                <TextBlock Text="Remover" Width="60" FontWeight="Bold"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Coluna" Width="60" FontWeight="Bold"/>
+                    <TextBlock Text="Regex Filtro" Width="180" FontWeight="Bold" Margin="0,0,10,0"/>
+                    <TextBlock Text="Regex Replace" Width="180" FontWeight="Bold" Margin="0,0,10,0"/>
+                    <TextBlock Text="Substituir Por" Width="120" FontWeight="Bold" Margin="0,0,10,0"/>
+                    <TextBlock Text="Remover" Width="60" FontWeight="Bold"/>
+                </StackPanel>
+                <Button Content="+" Width="30" Click="BtnAdicionarRegra_Click" Margin="70,0,0,0" Background="LightGreen"/>
             </StackPanel>
-            <StackPanel x:Name="stackRegraCampos" />
+
+            <StackPanel x:Name="stackRegraCampos"/>
         </StackPanel>
 
         <!-- Grades -->
